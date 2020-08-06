@@ -11,8 +11,10 @@ if('geolocation' in navigator) {
         long = position.coords.longitude;
         console.log(lat);
         console.log(long);
+        // Personal API Key for OpenWeatherMap API
         weatherUrl = `api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=5f6df12f283bc1a30cd52357ca119ed4`;
         console.log(weatherUrl);
+        
     })
 
 
@@ -21,7 +23,6 @@ if('geolocation' in navigator) {
     console.log('geolocation is not avaliable');
 }
 
-// Personal API Key for OpenWeatherMap API
 
 // Event listener to add function to existing HTML DOM element
 /* Function called by event listener */
@@ -37,7 +38,8 @@ async function getWeather() {
     console.log(response);
     const data = await response.json();
 };
-/* Function to POST data */
 
+
+async function postLocation() {}
 
 /* Function to GET Project Data */

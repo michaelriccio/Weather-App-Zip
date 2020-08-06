@@ -1,29 +1,40 @@
-// Setup empty JS object to act as endpoint for all routes
-const dataHolder = {};
-// Express to run server and routes
-const express = require('express');
-// Start up an instance of app
-const app = express();
-/* Dependencies */
-const bodyParser = require('body-parser');
+
+const dataHolder = {};// Setup empty JS object to act as endpoint for all routes
+
+const express = require('express');// Express to run server and routes
+
+const app = express();// Start up an instance of app
+
+const bodyParser = require('body-parser');/* Dependencies */
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-/* Middleware*/
-const cors = require('cors');
+
+const cors = require('cors');/* Middleware*/
 app.use(cors());
-// Initialize the main project folder
-app.use(express.static('public'));
+
+app.use(express.static('public'));// Initialize the main project folder
+app.use(express.json());
 // Spin up the server
 const port = 3000;
-app.listen(port, () => {`requesting localhost: ${port}`});
+app.listen(port, () => {console.log(`using localhost: ${port}`);});
 // Callback to debug
 
 // Initialize all route with a callback function
+// Callback function to complete GET '/all'
 app.get('/all', (request, response) => {
     console.log(request.body);
     let data = request.body;
     dataHolder.push(data);
 })
-// Callback function to complete GET '/all'  YOU DID THIS WITH AN ARROW FUNCTION
 
 // Post Route
+app.post('/post', (request, response) => {
+    console.log(request.body);
+    let data = request.body;
+    dataHolder.push(data);
+    response.json({
+        status: 'success',
+        latitude: data.lat,
+        longitude: data.long
+    })
+});
