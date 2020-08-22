@@ -1,9 +1,6 @@
-
-const dataHolder = [];// Setup empty JS object to act as endpoint for all routes
-const weatherJournal = {};
+const weatherJournal = []; // Setup empty JS object to act as endpoint for '/all' route
 
 const express = require('express');// Express to run server and routes
-
 const app = express();// Start up an instance of app
 
 const bodyParser = require('body-parser');/* Dependencies */
@@ -20,15 +17,15 @@ app.use(express.static('public'));// Initialize the main project folder
 // Initialize all route with a callback function
 // Callback function to complete GET '/all'
 app.get('/all', (request, response) => {
-    response = "GET response";
-    request.body = dataHolder;
-})
+    response.send("Gotcha");
+    response.send(weatherJournal);
+});
 
 // Post Route
 app.post('/post', (request, response) => {
     console.log(request.body);
     let data = request.body;
-    dataHolder.push(data);
+    weatherJournal.push(data);
     response.json({
         status: 'success',
         latitude: data.lat,
