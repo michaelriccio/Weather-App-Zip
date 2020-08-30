@@ -17,7 +17,6 @@ app.use(express.static('public'));// Initialize the main project folder
 // Initialize all route with a callback function
 // Callback function to complete GET '/all'
 app.get('/all', (request, response) => {
-    response.send("Gotcha");
     response.send(weatherJournal);
 });
 
@@ -26,14 +25,10 @@ app.post('/post', (request, response) => {
     console.log(request.body);
     let data = request.body;
     weatherJournal.push(data);
-    response.json({
-        status: 'success',
-        latitude: data.lat,
-        longitude: data.long
-    })
+    response.json({status: 'success'})
 });
 
 
 // Spin up the server
 const port = 3000;
-app.listen(port, () => {console.log(`using localhost: ${port}`);});
+app.listen(port, () => {console.log(`using localhost:${port}`);});
