@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <main>
+    <main id="main">
         <div id="weather-card">
-            <div id="weather"></div>
+            <img id="weather" ></img>
             <div id="temp"></div>
         </div>
-        <div id="advice">Bring an Umbrella</div>
+        <div id="advice"></div>
         <div id="tab-holder">
             <div class="tab">
                 <div>hourly</div>
@@ -24,10 +24,24 @@
                 <div>daily</div>
             </div>
             <div class="tab">
-                <div>past</div>
+                <div>journal</div>
+
             </div>
         </div>
+        <div class="hidden hourly">
+            <div class="tab">hourly</div>
+        </div>
+        <div class="hidden daily">
+            <div class="tab">daily</div>
+        </div>
+        <div class="hidden journal">
+            <div class="tab">journal</div>               
+            <table class="pastLog">
+                
+            </table></div>
     </main>
 </body>
 <script src="js/app.js"></script>
+<!-- <script src="../node_modules/chart.js/dist/Chart.bundle.js"></script> -->
+<!-- <script src="../node_modules/chart.js/dist/Chart.bundle.min.js"></script> -->
 </html>

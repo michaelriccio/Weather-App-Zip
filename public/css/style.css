@@ -2,19 +2,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@500&display=swap");
 :root {
-  --block: 4rem;
+  --block: 3rem;
   --purple: #5061ff;
   --violet: #b75cff;
   --blue: #2f00ec;
   --yellow: #ffce21;
   --sandstone: #ffd363;
   --limestone: #ffe99a;
-  --grey: #c6c6c6;
+  --grey: #c6c6c626;
   --temp-font: 'Raleway', sans-serif;
   --advice-font: 'Heebo', sans-serif;
   --tab-font: 'Gothic A1', sans-serif;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   scroll-behavior: smooth;
 }
 
@@ -22,71 +21,100 @@ body {
   background-color: var(--purple);
 }
 
-body main {
-  display: -ms-grid;
+body #main {
   display: grid;
-      grid-template-areas: "weather-card" "advice" "tab-holder";
-  -ms-grid-columns: (1fr)[1];
-      grid-template-columns: repeat(1, 1fr);
+  grid-template-areas: "weather-card" "advice" "tab-holder";
+  grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
 }
 
-body main #weather-card {
+body #main #weather-card {
   background-color: var(--grey);
-  opacity: .15;
-  height: calc(var(--block)*3);
-}
-
-body main #weather-card #weather {
-  display: relative;
-}
-
-body main #weather-card #temp {
-  font-family: var(--temp-font);
-  color: white;
-  font-size: 100px;
-  line-height: 117px;
-  display: relative;
-}
-
-body main #advice {
-  font-family: var(--advice-font);
-  color: var(--limestone);
-  text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
-  font-size: 77px;
-  line-height: 70px;
-  left: 10%;
+  height: calc(var(--block)*7);
+  width: calc(var(--block)*7);
+  grid-area: weather-card;
   position: relative;
+  transition: opacity .5s ease-out;
+  margin: calc(var(--block)*.25);
+}
+
+body #main #weather-card #weather {
+  opacity: 2;
+  width: calc(var(--block)*7);
+}
+
+body #main #weather-card #temp {
+  font-family: var(--temp-font);
+  position: absolute;
+  top: calc(var(--block)*1);
+  left: calc(var(--block)*2);
+  color: white;
+  font-size: calc(var(--block)*2);
   cursor: default;
 }
 
-body main #tab-holder .tab {
-  background-color: var(--violet);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: var(--block);
-  margin: 1rem;
+body #main #advice {
+  grid-area: advice;
+  font-family: var(--advice-font);
+  color: var(--limestone);
+  text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
+  font-size: calc(var(--block)*1);
+  line-height: calc(var(--block)*1);
+  left: 10%;
   position: relative;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 264px;
-  -webkit-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
-          box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
-  left: 20%;
-  cursor: pointer;
+  cursor: default;
+  transition: opacity .5s ease-out;
 }
 
-body main #tab-holder .tab > * {
+body #main #tab-holder {
+  grid-area: tab-holder;
+  transition: opacity .5s ease-out;
+}
+
+body #main #tab-holder .tab {
+  background-color: var(--violet);
+  display: flex;
+  justify-content: center;
+  height: calc(var(--block)*1);
+  margin: calc(var(--block)*.3);
+  position: relative;
+  align-items: center;
+  width: calc(var(--block)*5);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
+  left: 30%;
+  cursor: pointer;
+  transition: background-color .2s ease-out;
+}
+
+body #main #tab-holder .tab .active, body #main #tab-holder .tab:hover {
+  background-color: var(--yellow);
+}
+
+body #main #tab-holder .tab > * {
   padding-top: 5px;
   font-family: var(--tab-font);
   color: var(--blue);
-  font-size: 39px;
+  font-size: calc(var(--block)*.6);
   font-weight: 600;
   text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
+}
+
+body #main .hourly {
+  position: absolute;
+  transition: opacity .5s ease-out;
+}
+
+body #main .daily {
+  position: absolute;
+  transition: opacity .5s ease-out;
+}
+
+body #main .journal {
+  position: absolute;
+  transition: opacity .5s ease-out;
+}
+
+.hidden {
+  opacity: 0;
 }
 /*# sourceMappingURL=style.css.map */
