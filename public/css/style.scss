@@ -67,31 +67,6 @@ body{
         #tab-holder{
             grid-area: tab-holder;
             transition: opacity .5s ease-out;
-            .tab{
-                background-color: var(--violet);
-                display: flex;
-                justify-content: center;
-                height: calc(var(--block)*1);
-                margin: calc(var(--block)*.3);
-                position: relative;
-                align-items: center;
-                width: calc(var(--block)*5);
-                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
-                left: 30%;
-                cursor: pointer;
-                transition: background-color .2s ease-out;
-                .active, &:hover{
-                    background-color: var(--yellow);
-                }
-                >*{
-                    padding-top: 5px;
-                    font-family: var(--tab-font);
-                    color: var(--blue);
-                    font-size: calc(var(--block)*.6);
-                    font-weight: 600;
-                    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
-                }
-            }
         }
         .hourly{
             position: absolute;
@@ -108,7 +83,35 @@ body{
     }
 }
 
+#chart{
+    height: 400px;
+    width: 400px;
+}
 
 .hidden{
     opacity: 0;
+}
+
+.tab{
+    background-color: var(--violet);
+    display: flex;
+    justify-content: center;
+    height: calc(var(--block)*1);
+    margin: calc(var(--block)*.3);
+    position: relative;
+    align-items: center;
+    width: calc(var(--block)*5);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
+    left: 30%;
+    cursor: pointer;
+    transition: background-color .2s ease-out;
+    padding-top: 5px;
+    font-family: var(--tab-font);
+    color: var(--blue);
+    font-size: calc(var(--block)*.6);
+    font-weight: 600;
+    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
+    &:hover{
+        background-color: var(--yellow);
+    }
 }

@@ -1,25 +1,32 @@
 // Chart.js
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: options
-});
+function charting(ctx, data, lab, x) {
+    const myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            label: x,
+            datasets: [{
+                label: lab,
+                data: data,
+            }]
+        },
+        options: {}
+    });
+};
 
 // Global Variables
-let lat;
-let long;
-let weatherUrl;
-let hourlyUrl;
-let dailyUrl;
-var dailyForcast;
-var hourlyForcast;
-let pastLogs;
-var data1;
-var data2;
-var data3;
 const key = "5f6df12f283bc1a30cd52357ca119ed4";
 let currentJournal = [];
-
+const ctxHourlyTemp = document.getElementById('myChartHourlyTemp');
+const ctxHourlyPerc = document.getElementById('myChartHourlyPerc');
+const ctxDailyTemp = document.getElementById('myChartDailyTemp');
+const ctxDailyPerc = document.getElementById('myChartDailyPerc');
+// const optionsHour = ;
+// const optionsDaily = ;
+let data1;
+let hourlyTemp = [];
+let hourlyPerc = [];
+let dailyTemp = [];
+let dailyPerc = [];
 
 document.addEventListener('load', weatherGetter()); // when the page loads, run weatherGetter.
 
@@ -29,19 +36,19 @@ function weatherGetter(){
     if('geolocation' in navigator) { 
         console.log('geolocation is available');
         navigator.geolocation.getCurrentPosition((position) => {
-            lat = position.coords.latitude;
-            long = position.coords.longitude;
+            let lat = position.coords.latitude;
+            let long = position.coords.longitude;
 
             // Personal API Key for OpenWeatherMap API
-            weatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={minutely}&appid=${key}`;
+            let weatherUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude={minutely}&appid=${key}`;
 
             let [day, month, date, year, time] = (Date()).split(" ");
             let [hour, minute, second] = (time).split(":");
             let dateTime = `${month} ${date} ${year} - ${hour}:${minute}`;
-            console.log(dateTime);
+            console.log({dateTime});
             
             // Calling function, catching errors.
-            getWeather(dateTime).catch(error => {
+            getWeather(dateTime, weatherUrl).catch(error => {
                 console.log('error!');
                 console.error(error);
             });
@@ -50,7 +57,17 @@ function weatherGetter(){
             .catch(error => {
                 console.log('promise error');
                 console.error(error);
-            })
+            });
+            let d = new Date();
+            let w = d.getDay();
+            let h = d.getHours();
+
+            //Creating Charts AFTER data has been created
+
+            charting(ctxHourlyTemp, hourlyTemp, "TEMPERATURE", hourArray(h));
+            charting(ctxHourlyPerc, hourlyPerc, "PERCIPITATION", hourArray(h));
+            charting(ctxDailyTemp, dailyTemp, "TEMPERATURE", dayArray(w));
+            charting(ctxDailyPerc, dailyPerc, "PERCIPITATION", dayArray(w));
         })
     } else {
         console.log('geolocation is not avaliable');
@@ -60,22 +77,21 @@ function weatherGetter(){
 // Event listener to add function to existing HTML DOM element
 
 /* Function to GET Web API Data*/
-async function getWeather(dateTime) {
+async function getWeather(dateTime, weatherUrl) {
     const responseWeather = await fetch(weatherUrl);
     data1 = await responseWeather.json();
-    console.log(data1);
-    dailyForcast = data1.current.weather[0].description;
+    let dailyForcast = data1.current.weather[0].description;
     percipitation = `${data1.hourly[0].pop*100}%`;
-    let temperature = `${Math.round(((data1.current.temp-273.15)*1.8)+32)}°F`;
+    let temperature = convertF(data1.current.temp);
     let postInfo = [dateTime, dailyForcast, percipitation, temperature];
     postJournal('/post', postInfo);
     weatherIcon(data1);
-    tempIcon(temperature)
+    tempIcon(temperature);
+    chartData(data1);
 };
 
 /* Function to POST Project Data */
 async function postJournal(url='', data={}) {
-    console.log(data,'post journal');
     const optionPost = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -90,12 +106,12 @@ async function postJournal(url='', data={}) {
 async function getJournal(url){
     const response = await fetch(url);
     const journal = await response.json();
-    console.log(journal);
+    console.log({journal});
     currentJournal.push(journal);
 };
 
     // Making the picture match the weather object
-let weatherIcon = () => {
+let weatherIcon = (data1) => {
     let icon = document.getElementById("weather");
     let advice = document.getElementById("advice");
 if (data1.current.weather[0].main == 'Clouds'){
@@ -123,32 +139,79 @@ if (data1.current.weather[0].main == 'Clouds'){
     advice.textContent = "Visibility Low Be Careful";
 }}
 
+// Creating temperature on top of icon
 tempIcon = (temp) => {
     tempPlacement = document.getElementById("temp");
     tempPlacement.textContent = temp;
 }
 
-let tabClick = document.querySelectorAll(".tab");
+//Getting Fahrenheit from Kelvin
+const convertF = (rawTemp) => {return `${Math.round(((rawTemp-273.15)*1.8)+32)}°F`;};
+const convertTemp = (rawTemp) => {return Math.round(((rawTemp-273.15)*1.8)+32)};
+
+// Making day array
+const dayArray = (currentDay) => {
+    let week = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
+    let weekObject = [];
+    let rawDay = currentDay;
+    for(let i = 0; i <= 7; i++) {
+        weekObject.push(week[rawDay%7]);
+        rawDay++;
+    }
+    return weekObject;
+}
+
+// Making hour array
+const hourArray = (currentHour) => {
+    let hours = ['12am','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
+    let hourObject = [];
+    let rawHour = currentHour;
+    for(let i = 0; i <= 48; i++) {
+        hourObject.push(hours[rawHour%24]);
+        rawHour++;
+    }
+    return hourObject;
+}
+
+// Getting chart data
+chartData = (data) => {
+    data.daily.forEach((item, index) => {
+        dailyTemp.push(convertTemp(item.temp.day));
+        dailyPerc.push(item.pop*100);
+    });
+    data.hourly.forEach((item, index) => {
+        hourlyTemp.push((convertTemp(item.temp)));
+        hourlyPerc.push(item.pop*100);
+    })
+};
+
+// Making things disappear on click
+let mainChild = document.querySelectorAll(".main-child");
 let main = document.querySelector("#main");
 document.addEventListener('click', function(ev){
     if (ev.target.classList.contains("tab")){
-        tabClick.forEach((item,index)=>{
-            tabClick[index].classList.remove('active');
+        mainChild.forEach((item,index)=>{
+            item.classList.toggle('hidden');
         });
-        ev.target.classList.add('active');
-        console.log(ev.target.children[0]);
-        console.log(main.children.length);
-        for (i=0; i < main.children.length; i++){
-            main.children[i].classList.add('hidden');
+        for(let i=0; i < main.children.length; i++) {
+            main.children[i].style.cssText="z-index:1;";
         }
-        if(ev.target.children[0].textContent == 'hourly') {
-            document.querySelector('.hourly').classList.remove('hidden');
-        }else if(ev.target.children[0].textContent == 'daily') {
-            document.querySelector('.daily').classList.remove('hidden');
-        }else if(ev.target.children[0].textContent == 'journal') {
-            document.querySelector('.journal').classList.remove('hidden');
+        if(ev.target.textContent == 'hourly') {
+            document.querySelector('.hourly').classList.toggle('hidden');
+            document.querySelector('.hourly').style.cssText = "z-index: 99";
+        }else if(ev.target.textContent == 'daily') {
+            document.querySelector('.daily').classList.toggle('hidden');
+            document.querySelector('.daily').style.cssText = "z-index: 99";
+        }else if(ev.target.textContent == 'journal') {
+            document.querySelector('.journal').classList.toggle('hidden');
+            document.querySelector('.journal').style.cssText = "z-index: 99";
         }else {
             console.log('tab error')
         };
     }
 });
+
+// Making table and appending
+function makeTable(dataList) {
+    
+}

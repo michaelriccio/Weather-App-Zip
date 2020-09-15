@@ -71,34 +71,6 @@ body #main #tab-holder {
   transition: opacity .5s ease-out;
 }
 
-body #main #tab-holder .tab {
-  background-color: var(--violet);
-  display: flex;
-  justify-content: center;
-  height: calc(var(--block)*1);
-  margin: calc(var(--block)*.3);
-  position: relative;
-  align-items: center;
-  width: calc(var(--block)*5);
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
-  left: 30%;
-  cursor: pointer;
-  transition: background-color .2s ease-out;
-}
-
-body #main #tab-holder .tab .active, body #main #tab-holder .tab:hover {
-  background-color: var(--yellow);
-}
-
-body #main #tab-holder .tab > * {
-  padding-top: 5px;
-  font-family: var(--tab-font);
-  color: var(--blue);
-  font-size: calc(var(--block)*.6);
-  font-weight: 600;
-  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
-}
-
 body #main .hourly {
   position: absolute;
   transition: opacity .5s ease-out;
@@ -114,7 +86,37 @@ body #main .journal {
   transition: opacity .5s ease-out;
 }
 
+#chart {
+  height: 400px;
+  width: 400px;
+}
+
 .hidden {
   opacity: 0;
+}
+
+.tab {
+  background-color: var(--violet);
+  display: flex;
+  justify-content: center;
+  height: calc(var(--block)*1);
+  margin: calc(var(--block)*.3);
+  position: relative;
+  align-items: center;
+  width: calc(var(--block)*5);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
+  left: 30%;
+  cursor: pointer;
+  transition: background-color .2s ease-out;
+  padding-top: 5px;
+  font-family: var(--tab-font);
+  color: var(--blue);
+  font-size: calc(var(--block)*.6);
+  font-weight: 600;
+  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
+}
+
+.tab:hover {
+  background-color: var(--yellow);
 }
 /*# sourceMappingURL=style.css.map */
