@@ -15,7 +15,6 @@ function charting(ctx, data, lab, x) {
 
 // Global Variables
 const key = "5f6df12f283bc1a30cd52357ca119ed4";
-let currentJournal = [];
 const ctxHourlyTemp = document.getElementById('myChartHourlyTemp');
 const ctxHourlyPerc = document.getElementById('myChartHourlyPerc');
 const ctxDailyTemp = document.getElementById('myChartDailyTemp');
@@ -44,11 +43,11 @@ function weatherGetter(){
 
             let [day, month, date, year, time] = (Date()).split(" ");
             let [hour, minute, second] = (time).split(":");
-            let dateTime = `${month} ${date} ${year} - ${hour}:${minute}`;
-            console.log({dateTime});
+            let date1 = `${month} ${date} ${year}`;
+            let time1 = `${hour}:${minute}`;
             
             // Calling function, catching errors.
-            getWeather(dateTime, weatherUrl).catch(error => {
+            getWeather(date1, time1, weatherUrl).catch(error => {
                 console.log('error!');
                 console.error(error);
             });
@@ -63,7 +62,6 @@ function weatherGetter(){
             let h = d.getHours();
 
             //Creating Charts AFTER data has been created
-
             charting(ctxHourlyTemp, hourlyTemp, "TEMPERATURE", hourArray(h));
             charting(ctxHourlyPerc, hourlyPerc, "PERCIPITATION", hourArray(h));
             charting(ctxDailyTemp, dailyTemp, "TEMPERATURE", dayArray(w));
@@ -77,13 +75,13 @@ function weatherGetter(){
 // Event listener to add function to existing HTML DOM element
 
 /* Function to GET Web API Data*/
-async function getWeather(dateTime, weatherUrl) {
+async function getWeather(date, time, weatherUrl) {
     const responseWeather = await fetch(weatherUrl);
     data1 = await responseWeather.json();
     let dailyForcast = data1.current.weather[0].description;
-    percipitation = `${data1.hourly[0].pop*100}%`;
+    let percipitation = `${Math.round(data1.hourly[0].pop*100)}%`;
     let temperature = convertF(data1.current.temp);
-    let postInfo = [dateTime, dailyForcast, percipitation, temperature];
+    let postInfo = [date, time, dailyForcast, percipitation, temperature];
     postJournal('/post', postInfo);
     weatherIcon(data1);
     tempIcon(temperature);
@@ -107,7 +105,7 @@ async function getJournal(url){
     const response = await fetch(url);
     const journal = await response.json();
     console.log({journal});
-    currentJournal.push(journal);
+    makeTable(journal);
 };
 
     // Making the picture match the weather object
@@ -213,5 +211,23 @@ document.addEventListener('click', function(ev){
 
 // Making table and appending
 function makeTable(dataList) {
-    
+    let pastLog = document.querySelector('.pastLog');
+    if(dataList.length == 0) {
+        let noContent = document.createElement('h1');
+        noContent.textContent = 'There are no previous entries, try refreshing your page.';
+        let journalClass = document.querySelector('.journal');
+        console.log(journalClass);
+        journalClass.appendChild(noContent);
+    }else {
+        for (let i=0; i < dataList.length; i++) {
+            let makeRow = document.createElement('tr');
+            pastLog.appendChild(makeRow);
+            for (let h=0; h < 5; h++) {
+                let makeColumn = document.createElement('td');
+                makeColumn.textContent = dataList[i][h];
+                makeColumn.setAttribute('class', 'row-here');
+                pastLog.children[i].appendChild(makeColumn);
+            }
+        }
+    }
 }

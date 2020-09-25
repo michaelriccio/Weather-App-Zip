@@ -79,8 +79,20 @@ body{
         .journal{
             position: absolute;
             transition: opacity .5s ease-out;
+            .pastLog{
+                >*{
+                    background-color:red;
+                }
+            }
         }
     }
+}
+.row-here{
+    background: var(--limestone);
+    border: solid 3px var(--blue);
+    color: var(--violet);
+    text-align:center;
+    vertical-align: center;
 }
 
 #chart{

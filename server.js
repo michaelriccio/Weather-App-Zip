@@ -25,13 +25,8 @@ app.post('/post', (request, response) => {
     console.log(request.body);
     let data = request.body;
     weatherJournal.push(data);
-    // let hours = currentTime.getHours();
-    // let minutes = currentTime.getMinutes();
-    // let date = new Date();
     response.json({status: 'post is successful'});
 });
-
-
 
 // Spin up the server
 const port = 3000;
