@@ -1,4 +1,5 @@
-const weatherJournal = []; // Setup empty JS object to act as endpoint for '/all' route
+let counter = 0;
+const projectData = {}; // Setup empty JS object to act as endpoint for '/all' route
 
 const express = require('express');// Express to run server and routes
 const app = express();// Start up an instance of app
@@ -17,14 +18,15 @@ app.use(express.static('public'));// Initialize the main project folder
 // Initialize all route with a callback function
 // Callback function to complete GET '/all'
 app.get('/all', (request, response) => {
-    response.send(weatherJournal);
+    response.send(projectData);
 });
 
 // Post Route
 app.post('/post', (request, response) => {
     console.log(request.body);
     let data = request.body;
-    weatherJournal.push(data);
+    projectData[`key${counter}`] = data;
+    counter++;
     response.json({status: 'post is successful'});
 });
 

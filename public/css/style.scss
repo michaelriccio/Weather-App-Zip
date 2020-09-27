@@ -23,19 +23,32 @@
 body{
     background-color: var(--purple);
     #main{
-        display: grid;
-        grid-template-areas: 
-        "weather-card"
-        "advice"
-        "tab-holder";
-        grid-template-columns: repeat(1,1fr);
-        gap: 1rem;
+        form{
+            position: absolute;
+            top: 50%;
+            transform: tranlslateY(-50%);
+            margin: 0 auto;
+            #advice{
+                font-family: var(--advice-font);
+                color: var(--limestone);
+                text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
+                font-size:  calc(var(--block)*1);
+                line-height:  calc(var(--block)*1);
+                cursor: default;
+                transition: opacity .5s ease-out;
+            }
+            div{
+                display: flex;
+                justify-content: center;
+                margin: 1rem;
+            }
+        }
         #weather-card{
             background-color: var(--grey);
             height: calc(var(--block)*7);
             width: calc(var(--block)*7);
             grid-area: weather-card;
-            position: relative;
+            display:none;
             transition: opacity .5s ease-out;
             margin:  calc(var(--block)*.25);
             #weather{
@@ -52,31 +65,8 @@ body{
                 cursor: default;
             }
         }
-        #advice{
-            grid-area: advice;
-            font-family: var(--advice-font);
-            color: var(--limestone);
-            text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
-            font-size:  calc(var(--block)*1);
-            line-height:  calc(var(--block)*1);
-            left: 10%;
-            position: relative;
-            cursor: default;
-            transition: opacity .5s ease-out;
-        }
-        #tab-holder{
-            grid-area: tab-holder;
-            transition: opacity .5s ease-out;
-        }
-        .hourly{
-            position: absolute;
-            transition: opacity .5s ease-out;
-        }
-        .daily{
-            position: absolute;
-            transition: opacity .5s ease-out;
-        }
         .journal{
+            display: none;
             position: absolute;
             transition: opacity .5s ease-out;
             .pastLog{
@@ -93,11 +83,6 @@ body{
     color: var(--violet);
     text-align:center;
     vertical-align: center;
-}
-
-#chart{
-    height: 400px;
-    width: 400px;
 }
 
 .hidden{

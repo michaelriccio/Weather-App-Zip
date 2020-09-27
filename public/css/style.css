@@ -21,11 +21,27 @@ body {
   background-color: var(--purple);
 }
 
-body #main {
-  display: grid;
-  grid-template-areas: "weather-card" "advice" "tab-holder";
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
+body #main form {
+  position: absolute;
+  top: 50%;
+  transform: tranlslateY(-50%);
+  margin: 0 auto;
+}
+
+body #main form #advice {
+  font-family: var(--advice-font);
+  color: var(--limestone);
+  text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
+  font-size: calc(var(--block)*1);
+  line-height: calc(var(--block)*1);
+  cursor: default;
+  transition: opacity .5s ease-out;
+}
+
+body #main form div {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
 }
 
 body #main #weather-card {
@@ -33,7 +49,7 @@ body #main #weather-card {
   height: calc(var(--block)*7);
   width: calc(var(--block)*7);
   grid-area: weather-card;
-  position: relative;
+  display: none;
   transition: opacity .5s ease-out;
   margin: calc(var(--block)*.25);
 }
@@ -53,42 +69,22 @@ body #main #weather-card #temp {
   cursor: default;
 }
 
-body #main #advice {
-  grid-area: advice;
-  font-family: var(--advice-font);
-  color: var(--limestone);
-  text-shadow: 5px 4px 6px rgba(0, 0, 0, 0.25);
-  font-size: calc(var(--block)*1);
-  line-height: calc(var(--block)*1);
-  left: 10%;
-  position: relative;
-  cursor: default;
-  transition: opacity .5s ease-out;
-}
-
-body #main #tab-holder {
-  grid-area: tab-holder;
-  transition: opacity .5s ease-out;
-}
-
-body #main .hourly {
-  position: absolute;
-  transition: opacity .5s ease-out;
-}
-
-body #main .daily {
-  position: absolute;
-  transition: opacity .5s ease-out;
-}
-
 body #main .journal {
+  display: none;
   position: absolute;
   transition: opacity .5s ease-out;
 }
 
-#chart {
-  height: 400px;
-  width: 400px;
+body #main .journal .pastLog > * {
+  background-color: red;
+}
+
+.row-here {
+  background: var(--limestone);
+  border: solid 3px var(--blue);
+  color: var(--violet);
+  text-align: center;
+  vertical-align: center;
 }
 
 .hidden {
