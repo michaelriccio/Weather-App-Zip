@@ -2,38 +2,36 @@
 const key = "5f6df12f283bc1a30cd52357ca119ed4";
 let data1;
 let button = document.querySelector("#generate");
+let form = document.querySelector('#form');
 
-button.addEventListener('click', weatherGetter()); // button is clicked, run weatherGetter.
-
-/* Function called by event listener */
-function weatherGetter(){
+button.addEventListener('click', function weatherGetter(event){
     // Personal API Key for OpenWeatherMap API
-    let zip = document.querySelector('#zip').value;// get zipcode from form
+    let zip = document.querySelector('#zip').value;
     console.log(zip);
-    let weatherUrl = `api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${key}`;
+    let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${key}`;
     let [day, month, date, year, time] = (Date()).split(" ");
     let date1 = `${month} ${date} ${year}`;
     
     // Calling function, catching errors.
-    getWeather(date1, weatherUrl).catch(error => {
+    fetchWeather(date1, weatherUrl).catch(error => {
         console.log('error!');
         console.error(error);
     });
-
+    
     getJournal('/all')
     .catch(error => {
         console.log('promise error');
         console.error(error);
     });
-};
+});
 
 // Event listener to add function to existing HTML DOM element
 
 /* Function to GET Web API Data*/
-async function getWeather(date, weatherUrl) {
+async function fetchWeather(date, weatherUrl) {
     const responseWeather = await fetch(weatherUrl);
     data1 = await responseWeather.json();
-    let temperature = `${Math.round(data1.current.temp)}°F`;
+    let temperature = `${Math.round(data1.main.temp)}°F`;
     let postInfo = [date, temperature];
     postJournal('/post', postInfo);
     weatherIcon();
@@ -63,19 +61,19 @@ async function getJournal(url){
     // Making the picture match the weather object
 let weatherIcon = () => {
     let icon = document.getElementById("weather");
-    if (data1.current.weather[0].main == 'Clouds'){
-        if (data1.current.weather[0].description == 'few clouds' || data1.current.weather[0].description == 'scattered clouds'){
+    if (data1.weather[0].main == 'Clouds'){
+        if (data1.weather[0].description == 'few clouds' || data1.weather[0].description == 'scattered clouds'){
             icon.src = "/pics/cloudy.svg";
         }else{
             icon.src = "/pics/overcast.svg";
         }
-    }else if (data1.current.weather[0].main == 'Clear'){
+    }else if (data1.weather[0].main == 'Clear'){
         icon.src = "/pics/sunny.svg";
-    }else if (data1.current.weather[0].main == 'Snow'){
+    }else if (data1.weather[0].main == 'Snow'){
         icon.src = "/pics/snowing.svg";
-    }else if (data1.current.weather[0].main == 'Thunderstorm'){
+    }else if (data1.weather[0].main == 'Thunderstorm'){
         icon.src = "/pics/storming.svg";
-    }else if (data1.current.weather[0].main == 'Drizzle' || data1.current.weather[0].main == 'Rain') {
+    }else if (data1.weather[0].main == 'Drizzle' || data1.weather[0].main == 'Rain') {
         icon.src = "/pics/raining.svg";
     } else {
         icon.src = "/pics/foggy.svg";
@@ -122,7 +120,6 @@ function makeTable(dataList) {
         let noContent = document.createElement('h1');
         noContent.textContent = 'There are no previous entries, try refreshing your page.';
         let journalClass = document.querySelector('.journal');
-        console.log(journalClass);
         journalClass.appendChild(noContent);
     }else {
         for (let i=0; i < size; i++) {

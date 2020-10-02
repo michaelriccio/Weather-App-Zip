@@ -75,10 +75,6 @@ body #main .journal {
   transition: opacity .5s ease-out;
 }
 
-body #main .journal .pastLog > * {
-  background-color: red;
-}
-
 .row-here {
   background: var(--limestone);
   border: solid 3px var(--blue);

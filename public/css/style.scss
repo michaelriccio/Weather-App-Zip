@@ -69,11 +69,6 @@ body{
             display: none;
             position: absolute;
             transition: opacity .5s ease-out;
-            .pastLog{
-                >*{
-                    background-color:red;
-                }
-            }
         }
     }
 }
