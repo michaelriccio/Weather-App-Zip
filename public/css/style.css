@@ -22,6 +22,7 @@ body {
 }
 
 body #main form {
+  display: none;
   position: absolute;
   top: 50%;
   transform: tranlslateY(-50%);
@@ -39,9 +40,7 @@ body #main form #advice {
 }
 
 body #main form div {
-  display: flex;
-  justify-content: center;
-  margin: 1rem;
+  margin: 1rem auto;
 }
 
 body #main #weather-card {
@@ -49,9 +48,10 @@ body #main #weather-card {
   height: calc(var(--block)*7);
   width: calc(var(--block)*7);
   grid-area: weather-card;
-  display: none;
   transition: opacity .5s ease-out;
   margin: calc(var(--block)*.25);
+  opacity: 1;
+  position: absolute;
 }
 
 body #main #weather-card #weather {
@@ -70,21 +70,75 @@ body #main #weather-card #temp {
 }
 
 body #main .journal {
-  display: none;
   position: absolute;
+  left: calc(var(--block)*8);
   transition: opacity .5s ease-out;
+  opacity: 1;
+  width: 50%;
+}
+
+body #main .journal #entryholder {
+  top: calc(var(--block)*3);
+  height: 300px;
+  position: absolute;
+  display: flex;
+  margin: 1rem;
+}
+
+body #main .journal #entryholder .date, body #main .journal #entryholder .temp, body #main .journal #entryholder .content {
+  text-align: center;
+  border: var(--blue) 3px solid;
+  color: var(--yellow);
+}
+
+body #main .journal #entryholder .date .fitting, body #main .journal #entryholder .temp .fitting, body #main .journal #entryholder .content .fitting {
+  display: block;
+  margin: 0 1rem;
+  background: var(--violet);
+  border: solid 3px var(--blue);
+  color: var(--yellow);
+  text-align: center;
+}
+
+body #main .journal #entryholder .date {
+  width: 200px;
+}
+
+body #main .journal #entryholder .temp {
+  width: 100px;
+}
+
+body #main .journal #entryholder .content {
+  width: 600px;
+}
+
+body #main #form2 {
+  position: absolute;
+  top: calc(var(--block)*8);
 }
 
 .row-here {
-  background: var(--limestone);
-  border: solid 3px var(--blue);
-  color: var(--violet);
-  text-align: center;
-  vertical-align: center;
+  top: calc(var(--block)*1.1);
+  position: absolute;
+  margin: 1rem;
 }
 
-.hidden {
-  opacity: 0;
+.form, #weather-card, .journal {
+  display: none;
+  animation: fade-in .8s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.appear {
+  display: block !important;
 }
 
 .tab {
@@ -93,22 +147,17 @@ body #main .journal {
   justify-content: center;
   height: calc(var(--block)*1);
   margin: calc(var(--block)*.3);
-  position: relative;
+  position: absolute;
   align-items: center;
   width: calc(var(--block)*5);
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.19);
   left: 30%;
   cursor: pointer;
-  transition: background-color .2s ease-out;
   padding-top: 5px;
   font-family: var(--tab-font);
   color: var(--blue);
   font-size: calc(var(--block)*.6);
   font-weight: 600;
   text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.28);
-}
-
-.tab:hover {
-  background-color: var(--yellow);
 }
 /*# sourceMappingURL=style.css.map */

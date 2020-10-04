@@ -3,19 +3,24 @@ const key = "5f6df12f283bc1a30cd52357ca119ed4";
 let data1;
 let button = document.querySelector("#generate");
 let form = document.querySelector('#form');
+let main = document.querySelector("#main");
+let form2 = document.querySelector('#form2');
+let postInfo = [];
+let [day, month, date, year, time] = (Date()).split(" ");
+let date1 = `${month} ${date} ${year}`;
+let temperature;
 
 button.addEventListener('click', function weatherGetter(event){
     // Personal API Key for OpenWeatherMap API
     let zip = document.querySelector('#zip').value;
     console.log(zip);
-    let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${key}`;
-    let [day, month, date, year, time] = (Date()).split(" ");
-    let date1 = `${month} ${date} ${year}`;
+    let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&units=imperial&appid=${key}`;
     
     // Calling function, catching errors.
     fetchWeather(date1, weatherUrl).catch(error => {
         console.log('error!');
         console.error(error);
+        if(!alert('Must enter a valid zip code!')){window.location.reload();}
     });
     
     getJournal('/all')
@@ -31,11 +36,10 @@ button.addEventListener('click', function weatherGetter(event){
 async function fetchWeather(date, weatherUrl) {
     const responseWeather = await fetch(weatherUrl);
     data1 = await responseWeather.json();
-    let temperature = `${Math.round(data1.main.temp)}°F`;
-    let postInfo = [date, temperature];
-    postJournal('/post', postInfo);
+    temperature = `${Math.round(data1.main.temp)}°F`;
     weatherIcon();
     tempIcon(temperature);
+    transition(tempIcon);
 };
 
 /* Function to POST Project Data */
@@ -84,53 +88,45 @@ let weatherIcon = () => {
 tempIcon = (temp) => {
     tempPlacement = document.getElementById("temp");
     tempPlacement.textContent = temp;
+    return "good";
 }
 
 // Making things disappear on click
-let mainChild = document.querySelectorAll(".main-child");
-let main = document.querySelector("#main");
-document.addEventListener('click', function(ev){
-    if (ev.target.classList.contains("tab")){
-        mainChild.forEach((item,index)=>{
-            item.classList.toggle('hidden');
-        });
-        for(let i=0; i < main.children.length; i++) {
-            main.children[i].style.cssText="z-index:1;";
-        }
-        if(ev.target.textContent == 'hourly') {
-            document.querySelector('.hourly').classList.toggle('hidden');
-            document.querySelector('.hourly').style.cssText = "z-index: 99";
-        }else if(ev.target.textContent == 'daily') {
-            document.querySelector('.daily').classList.toggle('hidden');
-            document.querySelector('.daily').style.cssText = "z-index: 99";
-        }else if(ev.target.textContent == 'journal') {
-            document.querySelector('.journal').classList.toggle('hidden');
-            document.querySelector('.journal').style.cssText = "z-index: 99";
-        }else {
-            console.log('tab error')
-        };
+console.log(main.children.length);
+async function transition (good) {
+    for(let i=0;i < main.children.length; i++) {
+        main.children[i].classList.toggle('appear');
+        // main.children[i].style.cssText = 'display: absolute';
     }
-});
+}
 
 // Making table and appending
 function makeTable(dataList) {
-    let pastLog = document.querySelector('.pastLog');
+    let entryHolder = document.querySelector('#entryholder');
     let size = Object.keys(dataList).length;
     if(size == 0) {
         let noContent = document.createElement('h1');
         noContent.textContent = 'There are no previous entries, try refreshing your page.';
-        let journalClass = document.querySelector('.journal');
-        journalClass.appendChild(noContent);
+        noContent.setAttribute('class', 'row-here')
+        let journal = document.querySelector('.journal');
+        journal.appendChild(noContent);
     }else {
         for (let i=0; i < size; i++) {
-            let makeRow = document.createElement('tr');
-            pastLog.appendChild(makeRow);
             for (let h=0; h < 3; h++) {
-                let makeColumn = document.createElement('td');
-                makeColumn.textContent = dataList[`key${i}`][h];
-                makeColumn.setAttribute('class', 'row-here');
-                pastLog.children[i].appendChild(makeColumn);
+                let makeDiv = document.createElement('div');
+                makeDiv.textContent = dataList[`key${i}`][h];
+                makeDiv.setAttribute('class', 'fitting');
+                entryHolder.children[h].appendChild(makeDiv);
             }
         }
     }
 }
+
+button2 = document.querySelector('.button2');
+let feelingsHolder = document.querySelector('.feelings-holder');
+
+button2.addEventListener('click', function sendingIt(event){
+    let content = feelingsHolder.value;
+    postInfo.push(date1, temperature, content);
+    postJournal('/post', postInfo);
+});

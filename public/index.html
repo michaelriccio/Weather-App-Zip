@@ -9,38 +9,39 @@
         <meta name="keywords" content="weather, temperature, percipitation, today, cloudy, cloud">
         <link rel="stylesheet" href="css/style.css">
         <script src="js/app.js" defer></script>
+        <!-- <script src="node_modules/spin.js/spin.js" defer></script> -->
     </head>
     <body>
         <main id="main">
-            <form id='form'>
-                <label for="zip" id="advice" class="main-child">Enter your ZIP code</label>
+            <form id='form' class="appear">
+                <label for="zip" id="advice" class="">Enter your ZIP code</label>
                 <div>
                     <input id="zip" type="text" name="zipcode" placeholder="ex: 23452">
                     <button id="generate" type="button">submit</button>
                 </div>
             </form>
-            <div id="weather-card" class="hidden main-child">
+            <div id="weather-card">
                 <img id="weather" ></img>
                 <div id="temp"></div>
             </div>
-            <div class="hidden journal">
+            <form id="form2">
+                <textarea name="feelings-holder" placeholder="write your feelings here" class="feelings-holder"></textarea>
+                <button class='button2' type="submit">Submit</button>
+            </form>
+            <div class=" journal">
+                <div class="tab">past journals</div>               
                 <div id="entryholder">
-                    <div class="date"></div>
-                    <div class="temp"></div>
-                    <div class="content"></div>
+                    <div class="date">
+                        <h2>Date</h2>
+                    </div>
+                    <div class="temp">
+                        <h2>Temp</h2>
+                    </div>
+                    <div class="content">
+                        <h2>Content</h2>
+                    </div>
                 </div>
-                <div class="tab">journal</div>               
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Temperature</th>
-                            <th>Content</th>
-                        </tr>
-                    </thead>
-                    <tbody class="pastLog"></tbody>
-                </table>
             </div>
-    </main>
-</body>
+        </main>
+    </body>
 </html>
